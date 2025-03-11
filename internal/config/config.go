@@ -21,6 +21,7 @@ type Config struct {
 	IncludeStopped         bool
 	Interval               int
 	KeepBlankLines         bool
+	Rootless               bool
 }
 
 type ConfigFile struct {

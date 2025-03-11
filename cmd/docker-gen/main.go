@@ -43,6 +43,7 @@ var (
 	tlsKey                string
 	tlsCaCert             string
 	tlsVerify             bool
+	rootless              bool
 )
 
 func (strings *stringslice) String() string {
@@ -128,6 +129,7 @@ func initFlags() {
 	flag.StringVar(&tlsKey, "tlskey", filepath.Join(certPath, "key.pem"), "path to TLS client key file")
 	flag.StringVar(&tlsCaCert, "tlscacert", filepath.Join(certPath, "ca.pem"), "path to TLS CA certificate file")
 	flag.BoolVar(&tlsVerify, "tlsverify", os.Getenv("DOCKER_TLS_VERIFY") != "", "verify docker daemon's TLS certicate")
+	flag.BoolVar(&rootless, "rootless", os.Getenv("DOCKER_ROOTLESS") != "", "run in rootless mode")
 
 	flag.Usage = usage
 	flag.Parse()
@@ -178,6 +180,7 @@ func main() {
 			IncludeStopped:   includeStopped,
 			Interval:         interval,
 			KeepBlankLines:   keepBlankLines,
+			Rootless:         rootless,
 		}
 		for _, id := range sighupContainerID {
 			cfg.NotifyContainers[id] = int(syscall.SIGHUP)

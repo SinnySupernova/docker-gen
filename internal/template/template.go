@@ -219,7 +219,9 @@ func GenerateFile(config config.Config, containers context.Context) bool {
 				log.Fatalf("Unable to chmod temp file: %s\n", err)
 			}
 
-			chown(dest, fi)
+			if !config.Rootless {
+				chown(dest, fi)
+			}
 
 			oldContents, err = os.ReadFile(config.Dest)
 			if err != nil {
